@@ -5,6 +5,10 @@ const emailSender = require("./emailSender");
 const datesExcluder = require("./datesExcluder");
 const moment = require("moment");
 const TimeclockCaller = require("./reporterPlugins/timeclock365/timeclockCaller");
+const REPORT_TYPE = {
+  ARRIVAL: "arrival",
+  DEPARTURE: "departure"
+};
 
 class ReportScheduler {
   constructor(reportPlugin) {
@@ -27,7 +31,8 @@ class ReportScheduler {
         log.info(
           `Calling to reporter ${reportAction} for ${email}, ${userData} on ${new Date().toISOString()}`
         );
-        let res = await this._reportPlugin.reportArrival(userData);
+        const reportActionFunc = reportAction === REPORT_TYPE.ARRIVAL ? "reportArrival" : "reportDeparture";
+        let res = await this._reportPlugin[reportActionFunc]({ email, userData });
         if (res.error) {
           let msg = `Failed reporting ${
             this._reportPlugin.name
@@ -59,11 +64,12 @@ class ReportScheduler {
     let days = reportingDays.join();
 
     // schedule arrival
-    let jArrival = this._scheduleReport(arrivalTime, days, onSchedule.bind(this, "arrival"));
+    let jArrival = this._scheduleReport(arrivalTime, days, onSchedule.bind(this, REPORT_TYPE.ARRIVAL));
     this._scheduledJobs[email] = { arrivalJob: jArrival };
+    // this._scheduledJobs[email] = {};
 
     // schedule departure
-    let jDepart = this._scheduleReport(departTime, days, onSchedule.bind(this, "departure"));
+    let jDepart = this._scheduleReport(departTime, days, onSchedule.bind(this, REPORT_TYPE.DEPARTURE));
     this._scheduledJobs[email].departJob = jDepart;
   }
 
@@ -77,8 +83,8 @@ class ReportScheduler {
   }
 
   _scheduleReport(hour, days, onSchedule) {
-    // return schedule.scheduleJob(`0 0 ${hour} * * ${days}`, onSchedule);
-    return schedule.scheduleJob(`0 8 * * * *`, onSchedule);
+    return schedule.scheduleJob(`0 0 ${hour} * * ${days}`, onSchedule);
+    // return schedule.scheduleJob(`0 17 * * * *`, onSchedule);
   }
 }
 
