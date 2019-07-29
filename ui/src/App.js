@@ -60,7 +60,7 @@ class App extends Component {
     onPassChange = e => {
         let state = this.state;
         state.admin.pass = e.target.value;
-        if (e.target.value === 'annieIsHappyAndYoungTheBest') {
+        if (e.target.value === 'annieIsHappyAndYoung') {
             state.admin.enableAdminScreen = true;
 
             fetch('/getExcludedDates',

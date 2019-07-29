@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-GOOGLE_APPLICATION_CREDENTIALS=$USER/oriient/storage-access.json docker run -it -p 3011:3011 -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/storage-access.json -v /Users/yehuda/oriient/storage-access.json:/tmp/keys/storage-access.json:ro yehudasabag/work-time-reporter:0.0.1
+docker run -it -p 3011:3011 -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/storage-access.json -v /Users/yehuda/oriient/storage-access.json:/tmp/keys/storage-access.json:ro yehudasabag/work-time-reporter:0.0.1
