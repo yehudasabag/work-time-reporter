@@ -32,19 +32,8 @@ class ReportScheduler {
           `Calling to reporter ${reportAction} for ${email}, ${userData} on ${new Date().toISOString()}`
         );
         const reportActionFunc = reportAction === REPORT_TYPE.ARRIVAL ? "reportArrival" : "reportDeparture";
-        let res = await this._reportPlugin[reportActionFunc]({ email, userData });
-        if (res.error) {
-          let msg = `Failed reporting ${
-            this._reportPlugin.name
-          } ${reportAction} for ${email} on ${new Date().toISOString()}: ${res.message}`;
-          console.log(msg);
-          msg += ` You should report ${this._reportPlugin.name} ${reportAction} manually today... :(`;
-          emailSender.sendEmail(
-            msg,
-            email,
-            `Failed to report ${this._reportPlugin.name} ${reportAction} !!!`
-          );
-        } else {
+        try {
+          await this._reportPlugin[reportActionFunc]({ email, userData });
           let msg = `Successfully reported ${
             this._reportPlugin.name
           } ${reportAction} for ${email} on ${new Date().toISOString()}`;
@@ -55,7 +44,19 @@ class ReportScheduler {
             `Successfully reported ${this._reportPlugin.name} ${reportAction}, you can ignore this email`
           );
         }
-      }, 0 /*Math.random() 59 * 60 * 1000*/);
+        catch (err) {
+              let msg = `Failed reporting ${
+                this._reportPlugin.name
+              } ${reportAction} for ${email} on ${new Date().toISOString()}: ${res.message}`;
+              console.log(msg);
+              msg += ` You should report ${this._reportPlugin.name} ${reportAction} manually today... :(`;
+              emailSender.sendEmail(
+                msg,
+                email,
+                `Failed to report ${this._reportPlugin.name} ${reportAction} !!!`
+              );
+        }
+      }, Math.random() * 59 * 60 * 1000);
     };
     // in case the user is already scheduled
     this.clearUserSchedule(email);
