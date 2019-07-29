@@ -14,10 +14,10 @@ const datesExcluder = require("./datesExcluder");
 const path = require("path");
 const log = require("winston-module-logger").getLogger(require("path").basename(__filename));
 
-app.use(express.static(path.join(__dirname, "/../isufit-auto-ui/build")));
+app.use(express.static(path.join(__dirname, "/../build")));
 
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "/../isufit-auto-ui/build", "index.html"));
+  res.sendFile(path.join(__dirname, "/../build", "index.html"));
 });
 
 app.use(bodyParser.json());

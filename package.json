@@ -2,8 +2,9 @@
   "name": "work-time-reporter",
   "version": "1.0.0",
   "description": "Server for scheduling reports of arrival and departure to workplace with plugins to different reporting systems",
-  "main": "/server/server.js",
+  "main": "./server/server.js",
   "scripts": {
+    "start": "node ./server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

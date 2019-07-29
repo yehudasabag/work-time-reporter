@@ -60,7 +60,7 @@ class App extends Component {
     onPassChange = e => {
         let state = this.state;
         state.admin.pass = e.target.value;
-        if (e.target.value === 'dorhilakeren') {
+        if (e.target.value === 'annieIsHappyAndYoungTheBest') {
             state.admin.enableAdminScreen = true;
 
             fetch('/getExcludedDates',
@@ -158,7 +158,7 @@ class App extends Component {
                     this.updateNotificationState(`Failed to save excluded dates: ${res.message}`);
                 }
                 else {
-                    this.updateNotificationState(`Successfully saved excluded dates, see you next year Keren...`);
+                    this.updateNotificationState(`Successfully saved excluded dates, see you next year...`);
                 }
             })
             .catch(ex => {
@@ -332,9 +332,9 @@ class App extends Component {
                 </div>
             </TabPanel>
             <TabPanel>
-                <div>This tab is for Keren usage only, not for personal use. Please do not use unless you are Keren</div>
+                <div>This tab is for administrators usage only, not for personal use. Please do not use unless you are admin</div>
                 <div>
-                    Hi Keren, please insert your password: <input type="password" ref="pass" value={this.state.admin.pass}
+                    Hi, please insert your password: <input type="password" ref="pass" value={this.state.admin.pass}
                                                                   onChange={this.onPassChange}/>
                     {
                         ((enableAdmin, excludedDates) => {
