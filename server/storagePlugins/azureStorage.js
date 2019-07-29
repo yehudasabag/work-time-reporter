@@ -1,7 +1,14 @@
 const storage = require('azure-storage');
-const settings = require('./settings');
+const settings =  { 
+    usersStorage: {
+        usersContainerName: process.env.USERS_CONTAINER || "work-time-reporter-users",
+        storageAccount: process.env.USERS_STORAGE_ACCOUNT,
+        storageKey: process.env.USERS_STORAGE_KEY
+    },
+    excludedDatesFileName: process.env.EXCLUDED_DATES_FILENAME || "excludedDates"
+};
 
-class UsersStorage {
+class AzureStorage {
     constructor(){
         this._container = settings.usersStorage.containerName;
         this._blobSrvc = storage.createBlobService(settings.usersStorage.storageAccount,
@@ -131,8 +138,62 @@ class UsersStorage {
         return await Promise.all(users);
     }
 
+    saveDates(dates) {
+        return new Promise((resolve, reject) => {
+            this._blobSrvc.createBlockBlobFromText(this._container, settings.excludedDatesFileName,
+                JSON.stringify({
+                    excludedDates: dates
+                }), (error, result) => {
+                    if (error) {
+                        console.log(`Failed to save excluded dates ${dates}: ${error}`);
+                        reject(error);
+                    }
+                    else {
+                        console.log(`Successfully saved excluded dates ${dates}`);
+                        resolve(dates);
+                    }
+                });
+        });
+    }
+
+    getDates() {
+        return new Promise((resolve, reject) => {
+            this._blobSrvc.getBlobProperties(
+                this._container,
+                settings.excludedDatesFileName,
+                (err, properties, status) => {
+                    if (err) {
+                        reject({error: true, message: err.message});
+                    }
+                    else if (status.isSuccessful) {
+                        this._blobSrvc.getBlobToText(this._container, settings.excludedDatesFileName, (err, blobContent) => {
+                            if (err) {
+                                console.error(`Failed to read blob ${settings.excludedDatesFileName}`);
+                                reject({error: true, message: err.message});
+                            }
+                            else {
+                                console.log(`got ${settings.excludedDatesFileName}: ${blobContent}`);
+                                try {
+                                    let blob = JSON.parse(blobContent);
+                                    resolve(blob.excludedDates);
+                                }
+                                catch (ex) {
+                                    console.error(`Failed to parse ${blobContent}`);
+                                    reject({error: true, message: ex.message});
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        console.log('excludedDates file does not exist in storage, no date will be excluded');
+                        resolve(this._dates);
+                    }
+                });
+        });
+    }
+
 }
 
-let us = new UsersStorage();
+let us = new AzureStorage();
 module.exports = us;
 

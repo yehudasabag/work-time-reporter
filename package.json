@@ -1,0 +1,35 @@
+{
+  "name": "work-time-reporter",
+  "version": "1.0.0",
+  "description": "Server for scheduling reports of arrival and departure to workplace with plugins to different reporting systems",
+  "main": "/server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yehudasabag/work-time-reporter.git"
+  },
+  "keywords": [
+    "Report",
+    "work",
+    "hours",
+    "isufit",
+    "timeclock365"
+  ],
+  "author": "Yehuda Sabag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yehudasabag/work-time-reporter/issues"
+  },
+  "homepage": "https://github.com/yehudasabag/work-time-reporter#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^3.0.3",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "node-schedule": "^1.3.2",
+    "nodemailer": "^6.3.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "winston-module-logger": "^1.2.3"
+  }
+}

@@ -1,5 +1,3 @@
-"use strict";
-
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const settings = require('./settings');
@@ -21,11 +19,11 @@ class EmailSender{
     sendEmail(msg, email, subject) {
         let mailOptions = {
             to: email, // list of receivers
-            subject: `BioCatch Isufit Automation: ${subject} `, // Subject line
+            subject: `Work time reporter automation: ${subject} `, // Subject line
             html: `<div>Hi ${email},</div>
             <div>${msg}</div>
             <br/>
-            <div>Donated by Yehuda Sabag for BioCatch employees and for the happiness of Keren Hila-Dor :)</div>`
+            <div>Donated by Yehuda Sabag for employees around the world :)</div>`
         };
         this._transporter.sendMail(mailOptions, err => {
             if (err) {

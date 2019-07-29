@@ -11,7 +11,7 @@ import moment from 'moment';
 class App extends Component {
     constructor() {
         super();
-        this.state = { email: "", isufitNum: "", arriveHour: 9, departHour: 18, reportingDays:[true, true, true, true, true],//Sunday - Thursday by index
+        this.state = { email: "", pluginData: "", arriveHour: 9, departHour: 18, reportingDays:[true, true, true, true, true],//Sunday - Thursday by index
             notification: {
                 message: "",
                 active: false,
@@ -46,7 +46,7 @@ class App extends Component {
     };
 
     onCardNumChange = e => {
-        this.updateStateOf('isufitNum', e.target.value);
+        this.updateStateOf('pluginData', e.target.value);
     };
 
     onDepartChange = e => {
@@ -178,7 +178,7 @@ class App extends Component {
         }
         let post = {
             email: this.state.email,
-            isufitNum: this.state.isufitNum,
+            pluginData: this.state.pluginData,
             arriveHour: parseInt(this.state.arriveHour, 10) + new Date().getTimezoneOffset() / 60, // we want the time in UTC in the server
             departHour: parseInt(this.state.departHour, 10) + new Date().getTimezoneOffset() / 60,
             reportingDays: getReportingDays(this.state.reportingDays)
@@ -206,8 +206,8 @@ class App extends Component {
                     this.updateNotificationState(`Failed to register: ${res.message}`);
                 }
                 else {
-                    this.updateNotificationState(`Successfully registerd you to Isufit automation. You will get 2 daily emails 
-                    reporting you the arrival and departure time, or if there was any issue in the Isufit report`);
+                    this.updateNotificationState(`Successfully registerd you to Work time reporter automation. You will get 2 daily emails 
+                    reporting you the arrival and departure time, or if there was any issue in the automation report`);
                 }
             })
             .catch(ex => {
@@ -256,23 +256,23 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Isufit Automation - Make your life better</h1>
-            <h5>Donated to BioCatch employees (and for the sake of Keren Hila-Dor happiness) with love from Yehuda Sabag</h5>
+          <h1 className="App-title">Welcome to Work Time Reporter - Make your life better</h1>
+            <h5>Donated to developers (and office administrators) with love from Yehuda Sabag</h5>
         </header>
         <Tabs>
             <TabList>
-                <Tab>Register to Isufit automation</Tab>
-                <Tab>Un-Register from Isufit automation</Tab>
+                <Tab>Register to Work Time Reporter automation</Tab>
+                <Tab>Un-Register from Work Time Reporter automation</Tab>
                 <Tab>Admin - exclude vacation days reporting </Tab>
             </TabList>
 
             <TabPanel>
                 <div>
-                    Insert your biocatch email: <input type="email" id="register-email" value={this.state.email}
+                    Insert your work email: <input type="email" id="register-email" value={this.state.email}
                                                        ref="register-email" onChange={this.onEmailChange}/>
                 </div>
                 <div>
-                    Insert your isufit card number: <input id="register-cardnum" value={this.state.isufitNum}
+                    Insert your plugin specific data: <input id="register-cardnum" value={this.state.pluginData}
                                                            ref="register-cardnum" onChange={this.onCardNumChange} />
                 </div>
                 <div>
@@ -324,7 +324,7 @@ class App extends Component {
             </TabPanel>
             <TabPanel>
                 <div>
-                    Insert your biocatch email: <input type="email" id="unregister-email" value={this.state.email}
+                    Insert your work email: <input type="email" id="unregister-email" value={this.state.email}
                                                        ref="unregister-email" onChange={this.onEmailChange}/>
                 </div>
                 <div>

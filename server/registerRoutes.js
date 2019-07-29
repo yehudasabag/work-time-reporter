@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersManager = require('./usersManager');
-const isufitScheduler = require('./isufitScheduler');
+const reportScheduler = require('./reportScheduler');
 const datesExcluder = require('./datesExcluder');
 
 
@@ -10,12 +10,12 @@ router.post('/register', async (req, res) => {
     console.log('/register');
     let body = req.body;
     let email = body.email;
-    let isufitNum = body.isufitNum;
+    let pluginData = body.pluginData;
     let arriveHour = body.arriveHour || 9;
     let departHour = body.departHour || 18;
     let reportingDays = body.reportingDays || [0, 1, 2, 3, 4];
-    if (!email || !isufitNum) {
-        res.json({error: true, message: 'You must provide email and isufit card number'});
+    if (!email) {
+        res.json({error: true, message: 'You must provide email'});
         return;
     }
     if (arriveHour > 24 || arriveHour < 0 || departHour > 24 || departHour < 0) {
@@ -25,11 +25,11 @@ router.post('/register', async (req, res) => {
 
     try {
         // save the user to a blob
-        await usersManager.addUser(email, isufitNum, arriveHour, departHour, reportingDays);
+        await usersManager.addUser(email, pluginData, arriveHour, departHour, reportingDays);
         // schedule the user report
 
-        isufitScheduler.scheduleUserReporting(email, isufitNum, arriveHour, departHour, reportingDays);
-        console.log(`Scheduled isufit report for ${email} between ${arriveHour} to ${departHour}`);
+        reportScheduler.scheduleUserReporting(email, pluginData, arriveHour, departHour, reportingDays);
+        console.log(`Scheduled report for ${email} between ${arriveHour} to ${departHour}`);
         res.json({});
     }
     catch (ex) {
@@ -51,8 +51,8 @@ router.post('/unregister', async (req, res) => {
         // delete the user's blob
         await usersManager.deleteUser(email);
         // cancel the report schedule
-        isufitScheduler.clearUserSchedule(email);
-        console.log(`Cleared isufit automation for ${email}`);
+        reportScheduler.clearUserSchedule(email);
+        console.log(`Cleared automation for ${email}`);
         res.json({});
     }
     catch (ex) {

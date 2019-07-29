@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-notification": "^6.8.2",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-datepicker": "^1.8.0",
+    "react-dom": "^16.8.6",
+    "react-notification": "^6.8.4",
     "react-scripts": "1.0.17",
-    "react-tabs": "^2.1.1",
-    "react-datepicker": "^1.0.3",
-    "moment": "^2.20.1"
+    "react-tabs": "^2.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -17,5 +17,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3011"
 }
