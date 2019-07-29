@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
         res.json({});
     }
     catch (ex) {
-        console.log(`/register, failed to addUser: ${ex.stack}`);
+        console.log(`/register, failed to addUser: ${ex.message}`);
         res.json({error:true, message: ex.message});
     }
 });
