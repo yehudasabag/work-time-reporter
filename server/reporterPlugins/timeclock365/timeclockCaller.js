@@ -5,7 +5,7 @@ const arrivalSpec = "./cypress/integration/reportArrival.js";
 const departureSpec = "./cypress/integration/reportDeparture.js";
 
 class TimeclockCaller {
-  static async reportArrival({ email, userData: { pass } }) {
+  static async reportArrival(email, pass) {
     log.info("Trying to report arrival using cypress...");
     const result = await cypress.run({
       env: {
@@ -24,7 +24,7 @@ class TimeclockCaller {
     return {};
   }
 
-  static async reportDeparture({ email, userData: { pass } }) {
+  static async reportDeparture(email, pass) {
     log.info("Trying to report departure using cypress...");
     const result = await cypress.run({
       env: {

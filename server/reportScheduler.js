@@ -17,7 +17,7 @@ class ReportScheduler {
   }
 
   // The reporting days default value is for users created before i added support for this feature
-  scheduleUserReporting(email, userData, arrivalTime, departTime, reportingDays = [0, 1, 2, 3, 4]) {
+  scheduleUserReporting(email, pluginData, arrivalTime, departTime, reportingDays = [0, 1, 2, 3, 4]) {
     let onSchedule = reportAction => {
       // check if this day is excluded by the admin (non working day outside of friday and saturday)
       let currDate = moment().format("DD/MM/YYYY");
@@ -29,11 +29,11 @@ class ReportScheduler {
       // this function supposed to be called in the beginning of the given hour, so now we random the minutes
       setTimeout(async () => {
         log.info(
-          `Calling to reporter ${reportAction} for ${email}, ${userData} on ${new Date().toISOString()}`
+          `Calling to reporter ${reportAction} for ${email}, ${pluginData} on ${new Date().toISOString()}`
         );
         const reportActionFunc = reportAction === REPORT_TYPE.ARRIVAL ? "reportArrival" : "reportDeparture";
         try {
-          await this._reportPlugin[reportActionFunc]({ email, userData });
+          await this._reportPlugin[reportActionFunc](email, pluginData);
           let msg = `Successfully reported ${
             this._reportPlugin.name
           } ${reportAction} for ${email} on ${new Date().toISOString()}`;
@@ -43,18 +43,17 @@ class ReportScheduler {
             email,
             `Successfully reported ${this._reportPlugin.name} ${reportAction}, you can ignore this email`
           );
-        }
-        catch (err) {
-              let msg = `Failed reporting ${
-                this._reportPlugin.name
-              } ${reportAction} for ${email} on ${new Date().toISOString()}: ${res.message}`;
-              console.log(msg);
-              msg += ` You should report ${this._reportPlugin.name} ${reportAction} manually today... :(`;
-              emailSender.sendEmail(
-                msg,
-                email,
-                `Failed to report ${this._reportPlugin.name} ${reportAction} !!!`
-              );
+        } catch (err) {
+          let msg = `Failed reporting ${
+            this._reportPlugin.name
+          } ${reportAction} for ${email} on ${new Date().toISOString()}: ${res.message}`;
+          console.log(msg);
+          msg += ` You should report ${this._reportPlugin.name} ${reportAction} manually today... :(`;
+          emailSender.sendEmail(
+            msg,
+            email,
+            `Failed to report ${this._reportPlugin.name} ${reportAction} !!!`
+          );
         }
       }, Math.random() * 59 * 60 * 1000);
     };
@@ -85,7 +84,7 @@ class ReportScheduler {
 
   _scheduleReport(hour, days, onSchedule) {
     return schedule.scheduleJob(`0 0 ${hour} * * ${days}`, onSchedule);
-    // return schedule.scheduleJob(`0 17 * * * *`, onSchedule);
+    // return schedule.scheduleJob(`0 59 * * * *`, onSchedule);
   }
 }
 

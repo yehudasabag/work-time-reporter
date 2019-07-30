@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const registerRouter = require("./registerRoutes");
 const usersStorage = require("./storagePlugins/gcsStorage");
 const usersManager = require("./usersManager");
-const isufitScheduler = require("./reportScheduler");
+const reportScheduler = require("./reportScheduler");
 const datesExcluder = require("./datesExcluder");
 
 const path = require("path");
@@ -38,9 +38,9 @@ usersStorage
             let usersEmails = usersManager.getUsersEmails();
             for (let email of usersEmails) {
               let userData = usersManager.getUser(email);
-              isufitScheduler.scheduleUserReporting(
+              reportScheduler.scheduleUserReporting(
                 email,
-                userData,
+                userData.pluginData,
                 userData.arriveHour,
                 userData.departHour,
                 userData.reportingDays

@@ -27,12 +27,12 @@ class GcsStorage {
     }
   }
 
-  async saveUser(email, pass, arriveHour, departHour, reportingDays) {
+  async saveUser(email, pluginData, arriveHour, departHour, reportingDays) {
     const userFile = this._bucket.file(email);
     await userFile.save(
       JSON.stringify({
         email,
-        pass,
+        pluginData,
         arriveHour,
         departHour,
         reportingDays
