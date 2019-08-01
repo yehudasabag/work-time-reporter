@@ -15,7 +15,7 @@ class TimeclockCaller {
       spec: arrivalSpec,
       record: false
     });
-    if (result.runs[0].error) {
+    if (result.runs[0].tests[0].state === 'failed') {
       // the automation failed
       log.error(JSON.stringify(result));
       return { error: `Failed to report arrival: ${result.runs[0].error}` };
@@ -34,7 +34,7 @@ class TimeclockCaller {
       spec: departureSpec,
       record: false
     });
-    if (result.runs[0].error) {
+    if (result.runs[0].tests[0].state === 'failed') {
       // the automation failed
       log.error(JSON.stringify(result));
       return { error: `Failed to report departure: ${result.runs[0].error}` };
@@ -47,3 +47,5 @@ class TimeclockCaller {
 TimeclockCaller.pluginName = "Timeclock365";
 
 module.exports = TimeclockCaller;
+
+TimeclockCaller.reportArrival();
