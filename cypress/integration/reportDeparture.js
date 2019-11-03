@@ -7,6 +7,6 @@ describe("Report departure to TimeClock365", function() {
     // click on punch out
     cy.get(".dashboard__punch-btn").click();
     // click on yes, pause the task and punch out
-    cy.get(".btn-primary").click();
+    cy.get(".dashboard-modal__button_blue").click();
   });
 });

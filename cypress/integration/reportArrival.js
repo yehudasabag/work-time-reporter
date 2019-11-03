@@ -7,7 +7,7 @@ describe("Report arrival to TimeClock365", function() {
     // click on punch in
     cy.get(".dashboard__punch-btn").click();
     // click on yes
-    cy.get(".btn-primary").click();
+    cy.get('.dashboard-modal__button_blue').click();
     cy.get(':nth-child(1) > :nth-child(1) > .user-tasks > .user-tasks__btn').click();
   });
 });
